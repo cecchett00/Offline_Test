@@ -11,4 +11,14 @@ const unsplashApi = axios.create({
   },
 })
 
-export default unsplashApi
+export async function getRandomImgs(count) {
+  const res = await unsplashApi.get('/photos/random', { params: { count } })
+  return res
+}
+
+export async function getKeywordImgs(query) {
+  const res = await unsplashApi.get('/search/photos', {
+    params: { query, per_page: 12 },
+  })
+  return res
+}
