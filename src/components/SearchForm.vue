@@ -1,4 +1,5 @@
 <script setup>
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import { ref } from 'vue'
 
 const query = ref('')
@@ -16,7 +17,9 @@ function handleSubmit() {
   <form @submit.prevent="handleSubmit" class="search-form">
     <div class="input-wrapper">
       <input v-model="query" type="text" placeholder="Cerca immagini..." class="search-input" />
-      <button type="submit" class="search-btn">🔍</button>
+      <button type="submit" class="search-btn">
+        <font-awesome-icon :icon="faMagnifyingGlass" class="icon" />
+      </button>
     </div>
   </form>
 </template>

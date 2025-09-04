@@ -30,7 +30,7 @@ function addToCache(key, data) {
   }
 }
 
-async function fetchPhotos() {
+async function fetchPhotos(page) {
   try {
     const cacheKey =
       keyword.value !== '' ? `${keyword.value}|${currentPage.value}` : `random|${currentPage.value}`
@@ -45,7 +45,8 @@ async function fetchPhotos() {
       // Fetch per keyword
       const res = await getKeywordImgs(keyword.value, currentPage.value, 12)
 
-      console.log(res)
+      if (res.data.results.length === 0) return false
+
       photos.value = res.data.results
 
       totalPage.value = res.data.total_pages
@@ -54,10 +55,12 @@ async function fetchPhotos() {
     } else {
       // Fetch random
       const res = await getRandomImgs(12)
+      if (res.data.length === 0) return false
 
       const fetchedPhotos = Array.isArray(res.data) ? res.data : [res.data]
 
       photos.value = fetchedPhotos
+      currentPage.value = page
       totalPage.value = null
 
       addToCache(cacheKey, fetchedPhotos)
@@ -71,32 +74,31 @@ async function searchImages(query) {
   console.log(query)
   keyword.value = query
   currentPage.value = 1
-  fetchPhotos()
+  fetchPhotos(1)
 }
 
 onMounted(() => {
-  fetchPhotos()
+  fetchPhotos(1)
 })
 
-function prevPage() {
+async function prevPage() {
   if (currentPage.value > 1) {
-    currentPage.value--
-    fetchPhotos()
+    await fetchPhotos(currentPage.value - 1)
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 }
 
-function nextPage() {
+async function nextPage() {
   if (!totalPage.value || currentPage.value < totalPage.value) {
-    currentPage.value++
-    fetchPhotos()
+    const ok = await fetchPhotos(currentPage.value + 1)
+    if (!ok) console.log('non ci sono più pagine da caricare')
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 }
 
-function goToPage(page) {
-  currentPage.value = page
-  fetchPhotos()
+async function goToPage(page) {
+  const ok = await fetchPhotos(page)
+  if (!ok) console.log('non ci sono più pagine da caricare')
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 </script>

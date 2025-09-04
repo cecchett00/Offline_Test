@@ -13,32 +13,16 @@ const props = defineProps({
 const pagesToShow = computed(() => {
   const pages = []
 
-  // Prima pagina
   pages.push({ number: 1, label: '1', key: 1 })
 
-  if (props.totalPage) {
-    if (props.totalPage <= 5) {
-      for (let i = 2; i <= props.totalPage; i++) {
-        pages.push({ number: i, label: String(i), key: i })
-      }
-    } else {
-      let start = Math.max(2, props.currentPage - 1)
-      let end = Math.min(props.totalPage - 1, start + 2)
-      start = Math.max(2, end - 2)
+  let start = Math.max(2, props.currentPage - 1)
+  const end = start + 2
 
-      for (let i = start; i <= end; i++) {
-        pages.push({ number: i, label: String(i), key: i })
-      }
-      pages.push({ number: props.totalPage, label: String(props.totalPage), key: props.totalPage })
-    }
-  } else {
-    let start = Math.max(2, props.currentPage - 1)
-    const end = start + 2
-    for (let i = start; i <= end; i++) {
-      pages.push({ number: i, label: String(i), key: i })
-    }
-    pages.push({ number: end + 1, label: '…', key: 'next', placeholder: true })
+  for (let i = start; i <= end; i++) {
+    pages.push({ number: i, label: String(i), key: i })
   }
+
+  pages.push({ number: end + 1, label: '…', key: 'next', placeholder: true })
 
   return pages
 })
@@ -65,11 +49,7 @@ const pagesToShow = computed(() => {
         </span>
       </div>
 
-      <button
-        @click="$emit('next')"
-        :disabled="totalPage ? currentPage >= totalPage : false"
-        class="pager-btn"
-      >
+      <button @click="$emit('next')" class="pager-btn">
         <font-awesome-icon :icon="faAngleRight" class="icon" />
       </button>
     </div>
@@ -150,7 +130,9 @@ const pagesToShow = computed(() => {
   border-color: #b2fc02;
   background: #f0f0f0;
 }
-
+.icon {
+  font-size: 1rem;
+}
 /* MEDIA QUERY: schermi piccoli */
 @media (max-width: 480px) {
   .pager-btn {
@@ -171,6 +153,10 @@ const pagesToShow = computed(() => {
 
   .page-boxes {
     gap: 4px;
+  }
+
+  .icon {
+    font-size: 0.7rem;
   }
 }
 </style>

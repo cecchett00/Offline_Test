@@ -24,7 +24,7 @@ function onSaveComment({ photo, comment }) {
 </script>
 
 <template>
-  <div class="images">
+  <transition-group name="fade" tag="div" class="images">
     <img
       v-for="photo in props.photos"
       :key="photo.id"
@@ -32,7 +32,7 @@ function onSaveComment({ photo, comment }) {
       :alt="photo.alt_description"
       @click="openModal(photo)"
     />
-  </div>
+  </transition-group>
 
   <ImgDetail
     :photo="selectedPhoto"
@@ -48,6 +48,15 @@ function onSaveComment({ photo, comment }) {
   column-count: 3;
   column-gap: 12px;
   margin-top: 20px;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 1s;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 
 .images img {
