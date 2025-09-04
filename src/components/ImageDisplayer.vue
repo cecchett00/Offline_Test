@@ -1,6 +1,12 @@
 <script setup>
+import { onMounted } from 'vue'
+
 const props = defineProps({
-  photos: { type: [], required: true },
+  photos: { type: Array, required: true },
+})
+
+onMounted(() => {
+  console.log(props.photos)
 })
 </script>
 
