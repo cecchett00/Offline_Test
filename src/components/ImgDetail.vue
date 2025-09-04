@@ -18,7 +18,6 @@ function closeModal() {
 const comments = ref()
 
 function fetchComments() {
-  console.log(getComments(props.photo.id))
   comments.value = getComments(props.photo.id)
 }
 
