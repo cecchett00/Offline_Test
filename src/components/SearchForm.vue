@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 
 const query = ref('')
+
 const emit = defineEmits(['onSearch'])
 
 function handleSubmit() {

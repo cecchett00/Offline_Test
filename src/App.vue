@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, reactive } from 'vue'
 import SearchForm from './components/SearchForm.vue'
 import { getKeywordImgs, getRandomImgs } from './utils/api'
 import Pager from './components/Pager.vue'
@@ -9,9 +9,10 @@ const photos = ref([])
 const currentPage = ref(1)
 const totalPage = ref()
 const keyword = ref()
+
 const MAX_PAGE_KEYWORD_CACHE = 5
 
-const photoCache = {}
+const photoCache = reactive({})
 const cacheOrder = []
 
 function addToCache(key, data) {
@@ -32,9 +33,7 @@ function addToCache(key, data) {
 async function fetchPhotos() {
   try {
     const cacheKey =
-      keyword.value.trim() !== ''
-        ? `${keyword.value}|${currentPage.value}`
-        : `random|${currentPage.value}`
+      keyword.value !== '' ? `${keyword.value}|${currentPage.value}` : `random|${currentPage.value}`
 
     // Se cache esiste, la uso
     if (photoCache[cacheKey]) {
@@ -42,10 +41,11 @@ async function fetchPhotos() {
       return
     }
 
-    if (keyword.value.trim() !== '') {
+    if (keyword.value) {
       // Fetch per keyword
       const res = await getKeywordImgs(keyword.value, currentPage.value, 12)
 
+      console.log(res)
       photos.value = res.data.results
 
       totalPage.value = res.data.total_pages
@@ -106,6 +106,7 @@ function goToPage(page) {
     <SearchForm @onSearch="searchImages" />
     <ImageDisplayer :photos="photos" />
   </div>
+
   <div>
     <Pager
       :current-page="currentPage"

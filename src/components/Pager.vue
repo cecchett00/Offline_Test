@@ -1,6 +1,8 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 
 <script setup>
+import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { computed } from 'vue'
 
 const props = defineProps({
@@ -45,7 +47,9 @@ const pagesToShow = computed(() => {
 <template>
   <div class="pager-container">
     <div class="pager">
-      <button @click="$emit('prev')" :disabled="currentPage <= 1" class="pager-btn">◀</button>
+      <button @click="$emit('prev')" :disabled="currentPage <= 1" class="pager-btn">
+        <font-awesome-icon :icon="faAngleLeft" class="icon" />
+      </button>
 
       <div class="page-boxes">
         <span
@@ -66,7 +70,7 @@ const pagesToShow = computed(() => {
         :disabled="totalPage ? currentPage >= totalPage : false"
         class="pager-btn"
       >
-        ▶
+        <font-awesome-icon :icon="faAngleRight" class="icon" />
       </button>
     </div>
   </div>
@@ -84,6 +88,7 @@ const pagesToShow = computed(() => {
   margin: 10px 0px;
   font-family: 'Roboto', sans-serif;
   background-color: transparent;
+  flex-wrap: wrap; /* utile su schermi piccoli */
 }
 
 .pager-btn {
@@ -109,6 +114,7 @@ const pagesToShow = computed(() => {
 .page-boxes {
   display: flex;
   gap: 6px;
+  flex-wrap: wrap; /* consente di andare a capo se lo spazio è poco */
 }
 
 .page-box {
@@ -125,10 +131,11 @@ const pagesToShow = computed(() => {
     background 0.2s,
     border-color 0.2s;
   user-select: none;
+  font-size: 14px;
 }
 
 .page-box.active {
-  background: #f0f0f0;
+  background: white;
   border-color: #b2fc02;
   color: black;
   font-weight: bold;
@@ -142,5 +149,28 @@ const pagesToShow = computed(() => {
 .page-box:hover:not(.active):not(.placeholder) {
   border-color: #b2fc02;
   background: #f0f0f0;
+}
+
+/* MEDIA QUERY: schermi piccoli */
+@media (max-width: 480px) {
+  .pager-btn {
+    padding: 6px 10px;
+    font-size: 14px;
+  }
+
+  .page-box {
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+  }
+
+  .pager {
+    gap: 6px;
+    margin: 5px 0;
+  }
+
+  .page-boxes {
+    gap: 4px;
+  }
 }
 </style>

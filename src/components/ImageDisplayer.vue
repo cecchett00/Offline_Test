@@ -1,13 +1,26 @@
 <script setup>
-import { onMounted } from 'vue'
+import { ref } from 'vue'
+import ImgDetail from './ImgDetail.vue'
 
 const props = defineProps({
   photos: { type: Array, required: true },
 })
 
-onMounted(() => {
-  console.log(props.photos)
-})
+const modalOpen = ref(false)
+const selectedPhoto = ref()
+
+function openModal(photo) {
+  selectedPhoto.value = photo
+  modalOpen.value = true
+}
+
+function onSavePhoto(photo) {
+  console.log('Salvata foto:', photo)
+}
+
+function onSaveComment({ photo, comment }) {
+  console.log('Commento per', photo.id, ':', comment)
+}
 </script>
 
 <template>
@@ -17,8 +30,17 @@ onMounted(() => {
       :key="photo.id"
       :src="photo.urls.small"
       :alt="photo.alt_description"
+      @click="openModal(photo)"
     />
   </div>
+
+  <ImgDetail
+    :photo="selectedPhoto"
+    :isOpen="modalOpen"
+    @close="modalOpen = false"
+    @savePhoto="onSavePhoto"
+    @saveComment="onSaveComment"
+  />
 </template>
 
 <style scoped>
