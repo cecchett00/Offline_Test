@@ -1,5 +1,5 @@
 <script setup>
-import { faDownload } from '@fortawesome/free-solid-svg-icons'
+import { faDownload, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { defineProps, defineEmits, ref } from 'vue'
 import { getComments } from '@/utils/commentCache'
 import CommentMaker from './CommentMaker.vue'
@@ -58,7 +58,9 @@ async function savePhoto() {
         <!-- <div class="commentContainer"> -->
         <CommentMaker :photo-id="props.photo.id" @comment-done="fetchComments" />
         <!-- </div> -->
-        <button class="close-btn" @click="closeModal">✖</button>
+        <button class="close-btn" @click="closeModal">
+          <font-awesome-icon :icon="faXmark" class="iconX" />
+        </button>
         <div class="comments-list" v-if="getComments(photo.id).length">
           <div v-for="(c, index) in getComments(photo.id)" :key="index" class="comment-item">
             {{ c }}
@@ -166,6 +168,12 @@ async function savePhoto() {
 }
 .icon {
   font-size: 1rem;
+}
+.iconX {
+  font-size: 1.2rem;
+  padding: 5px;
+  background-color: red;
+  border-radius: 20px;
 }
 .savePhoto {
   margin-top: 10px;

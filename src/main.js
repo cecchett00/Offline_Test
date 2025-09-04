@@ -8,12 +8,14 @@ import {
   faDownload,
   faMagnifyingGlass,
   faPaperPlane,
+  faXmark,
 } from '@fortawesome/free-solid-svg-icons'
 import App from './App.vue'
+import router from './router/router'
 
-library.add(faDownload, faMagnifyingGlass, faPaperPlane, faAngleLeft, faAngleRight)
+library.add(faDownload, faMagnifyingGlass, faPaperPlane, faAngleLeft, faAngleRight, faXmark)
 
-const app = createApp(App)
+const app = createApp(App).use(router)
 app.component('font-awesome-icon', FontAwesomeIcon)
 
 app.use(createPinia())
