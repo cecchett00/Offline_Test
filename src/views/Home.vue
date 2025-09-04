@@ -16,6 +16,10 @@ const MAX_PAGE_KEYWORD_CACHE = 5
 const router = useRouter()
 const route = useRoute()
 
+onMounted(() => {
+  console.log(route.params)
+})
+
 const photoCache = reactive({})
 const cacheOrder = []
 const randomWords = [
@@ -55,6 +59,7 @@ function addToCache(key, data) {
 
 async function fetchPhotos(page, kw) {
   try {
+    if (!kw) kw = getRandomWord()
     const cacheKey = `${kw}|${page}`
 
     if (photoCache[cacheKey]) {
@@ -85,23 +90,19 @@ async function searchImages(query) {
   await fetchPhotos(1, kw)
 }
 
-onMounted(() => {
-  let kw = route.params.keyword
-  let page = parseInt(route.params.page) || 1
-  if (!kw) {
-    kw = getRandomWord()
-    router.replace({ name: 'Search', params: { keyword: kw, page } })
-  }
-  fetchPhotos(page, kw)
-})
-
 watch(
-  () => route.fullPath,
-  () => {
-    const kw = route.params.keyword
-    const page = parseInt(route.params.page) || 1
-    fetchPhotos(page, kw)
+  () => [route.params.keyword, route.params.page],
+  ([kw, page]) => {
+    // se keyword non c'è, prendi una random
+    const resolvedKeyword = kw || getRandomWord()
+    const resolvedPage = parseInt(page) || 1
+
+    keyword.value = resolvedKeyword
+    currentPage.value = resolvedPage
+
+    fetchPhotos(resolvedPage, resolvedKeyword)
   },
+  { immediate: true },
 )
 
 async function prevPage() {
