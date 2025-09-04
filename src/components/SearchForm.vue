@@ -6,8 +6,26 @@ const query = ref('')
 
 const emit = defineEmits(['onSearch'])
 
+const randomWords = [
+  'nature',
+  'city',
+  'ocean',
+  'mountains',
+  'forest',
+  'animals',
+  'technology',
+  'art',
+  'space',
+  'flowers',
+]
+
+function getRandomWord() {
+  const index = Math.floor(Math.random() * randomWords.length)
+  return randomWords[index]
+}
+
 function handleSubmit() {
-  emit('onSearch', query.value.trim() || '')
+  emit('onSearch', query.value.trim() || getRandomWord())
 }
 </script>
 
