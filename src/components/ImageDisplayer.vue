@@ -1,7 +1,26 @@
 <script setup>
+import { ref } from 'vue'
+import ImgDetail from './ImgDetail.vue'
+
 const props = defineProps({
-  photos: { type: [], required: true },
+  photos: { type: Array, required: true },
 })
+
+const modalOpen = ref(false)
+const selectedPhoto = ref()
+
+function openModal(photo) {
+  selectedPhoto.value = photo
+  modalOpen.value = true
+}
+
+function onSavePhoto(photo) {
+  console.log('Salvata foto:', photo)
+}
+
+function onSaveComment({ photo, comment }) {
+  console.log('Commento per', photo.id, ':', comment)
+}
 </script>
 
 <template>
@@ -11,8 +30,17 @@ const props = defineProps({
       :key="photo.id"
       :src="photo.urls.small"
       :alt="photo.alt_description"
+      @click="openModal(photo)"
     />
   </div>
+
+  <ImgDetail
+    :photo="selectedPhoto"
+    :isOpen="modalOpen"
+    @close="modalOpen = false"
+    @savePhoto="onSavePhoto"
+    @saveComment="onSaveComment"
+  />
 </template>
 
 <style scoped>

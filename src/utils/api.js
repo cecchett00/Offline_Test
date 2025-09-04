@@ -16,9 +16,9 @@ export async function getRandomImgs(count) {
   return res
 }
 
-export async function getKeywordImgs(query) {
+export async function getKeywordImgs(query, page, perpage) {
   const res = await unsplashApi.get('/search/photos', {
-    params: { query, per_page: 12 },
+    params: { query: query, page: page, per_page: perpage },
   })
   return res
 }
