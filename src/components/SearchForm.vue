@@ -7,9 +7,7 @@ const query = ref('')
 const emit = defineEmits(['onSearch'])
 
 function handleSubmit() {
-  if (query.value.trim()) {
-    emit('onSearch', query.value.trim())
-  }
+  emit('onSearch', query.value.trim() || '')
 }
 </script>
 
