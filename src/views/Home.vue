@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup>
-import { onMounted, ref, reactive, watch } from 'vue'
+import { ref, reactive, watch } from 'vue'
 import SearchForm from '../components/SearchForm.vue'
 import { getKeywordImgs } from '../utils/api'
 import Pager from '../components/Pager.vue'
@@ -15,10 +15,6 @@ const MAX_PAGE_KEYWORD_CACHE = 5
 
 const router = useRouter()
 const route = useRoute()
-
-onMounted(() => {
-  console.log(route.params)
-})
 
 const photoCache = reactive({})
 const cacheOrder = []
@@ -93,7 +89,6 @@ async function searchImages(query) {
 watch(
   () => [route.params.keyword, route.params.page],
   ([kw, page]) => {
-    // se keyword non c'è, prendi una random
     const resolvedKeyword = kw || getRandomWord()
     const resolvedPage = parseInt(page) || 1
 
