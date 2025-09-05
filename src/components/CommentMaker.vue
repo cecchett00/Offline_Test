@@ -73,5 +73,6 @@ function saveComment() {
 
 .icon {
   font-size: 1rem;
+  color: black;
 }
 </style>

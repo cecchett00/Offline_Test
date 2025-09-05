@@ -73,7 +73,9 @@ function handleSubmit() {
     background 0.2s,
     transform 0.1s;
 }
-
+.icon {
+  color: black;
+}
 .search-btn:hover {
   transform: scale(1.05);
 }

@@ -176,6 +176,7 @@ async function savePhoto() {
   border-radius: 20px;
 }
 .savePhoto {
+  color: black;
   margin-top: 10px;
   padding: 8px 12px;
   width: 70%;
